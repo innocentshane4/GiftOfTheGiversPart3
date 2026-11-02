@@ -1,0 +1,97 @@
+@model VolunteerRegisterViewModel
+@{
+    ViewData["Title"] = "Become a Volunteer";
+}
+
+<section class="container-fluid p-0">
+    <div class="row g-0 min-vh-100">
+        <div class="col-lg-7 d-flex align-items-center">
+            <div class="p-4 p-lg-5 w-100" style="max-width:640px; margin:0 auto;">
+                <h1>Become a Volunteer</h1>
+                <p class="text-muted-custom mb-4">Join our network of volunteers making a direct impact in communities that need it most.</p>
+
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert" style="display:@(ViewData.ModelState.IsValid ? "none" : "block")"></div>
+
+                <form asp-controller="Volunteers" asp-action="Register" method="post">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="FullName" class="form-label"></label>
+                            <input asp-for="FullName" class="form-control" />
+                            <span asp-validation-for="FullName" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Phone" class="form-label"></label>
+                            <input asp-for="Phone" class="form-control" />
+                            <span asp-validation-for="Phone" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Availability" class="form-label"></label>
+                            <select asp-for="Availability" class="form-select">
+                                <option value="">Select availability</option>
+                                @foreach (var opt in VolunteerRegisterViewModel.AvailabilityOptions)
+                                {
+                                    <option value="@opt">@opt</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Availability" class="text-danger small"></span>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="Skills" class="form-label"></label>
+                            <select asp-for="Skills" class="form-select" multiple size="5">
+                                @foreach (var skill in VolunteerRegisterViewModel.AvailableSkills)
+                                {
+                                    <option value="@skill">@skill</option>
+                                }
+                            </select>
+                            <div class="form-text">Hold Ctrl (Cmd on Mac) to select multiple skills.</div>
+                            <span asp-validation-for="Skills" class="text-danger small"></span>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="PreferredArea" class="form-label"></label>
+                            <select asp-for="PreferredArea" class="form-select">
+                                <option value="">Select preferred area of support</option>
+                                @foreach (var area in VolunteerRegisterViewModel.PreferredAreaOptions)
+                                {
+                                    <option value="@area">@area</option>
+                                }
+                            </select>
+                            <span asp-validation-for="PreferredArea" class="text-danger small"></span>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="Experience" class="form-label"></label>
+                            <textarea asp-for="Experience" class="form-control" rows="3" placeholder="Tell us about any relevant previous experience"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input asp-for="AcceptedTerms" class="form-check-input" />
+                                <label asp-for="AcceptedTerms" class="form-check-label small"></label>
+                                <span asp-validation-for="AcceptedTerms" class="text-danger small d-block"></span>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-brand-primary w-100">Register Now</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-5 d-none d-lg-block position-relative">
+            <div style="position:absolute; inset:0; background: linear-gradient(180deg, rgba(27,58,92,0.55), rgba(27,58,92,0.75)), url('/images/volunteer-hero.jpg') center/cover no-repeat;">
+                <div class="d-flex flex-column justify-content-end h-100 p-5 text-white">
+                    <i class="bi bi-people-fill mb-3" style="font-size:2rem;"></i>
+                    <h3 class="text-white">Your time can change a life.</h3>
+                    <p>From emergency response to long-term recovery, our volunteers are at the heart of every relief effort we run.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

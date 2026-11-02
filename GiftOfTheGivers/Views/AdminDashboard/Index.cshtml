@@ -1,0 +1,63 @@
+@model AdminDashboardViewModel
+@{
+    Layout = "_DashboardLayout";
+}
+
+<p class="text-muted-custom mb-4">A full overview of users, projects, donations and volunteers across the platform.</p>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-3 col-6">
+        <div class="stat-card">
+            <div class="stat-number">@Model.TotalUsers</div>
+            <div class="text-muted-custom small mt-1">Total Users</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="stat-card">
+            <div class="stat-number">
+                R@(Model.TotalDonationValue.ToString("N0"))
+            </div>
+            <div class="text-muted-custom small mt-1">Total Donation Value</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="stat-card">
+            <div class="stat-number">@Model.TotalProjects</div>
+            <div class="text-muted-custom small mt-1">Total Projects</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="stat-card">
+            <div class="stat-number">@Model.ActiveVolunteers</div>
+            <div class="text-muted-custom small mt-1">Active Volunteers</div>
+        </div>
+    </div>
+</div>
+
+<div class="card-brand p-4">
+    <h5 class="mb-3">Recent Activity</h5>
+    @if (!Model.RecentActivity.Any())
+    {
+        <p class="text-muted-custom small mb-0">No activity recorded yet.</p>
+    }
+    else
+    {
+        <div class="table-responsive-cards">
+            <table class="table table-brand mb-0">
+                <thead><tr><th>Action</th><th>Entity</th><th>User</th><th>Timestamp</th><th>Status</th></tr></thead>
+                <tbody>
+                    @foreach (var a in Model.RecentActivity)
+                    {
+                        <tr>
+                            <td><i class="bi bi-clock-history text-muted-custom me-1"></i>@a.Action</td>
+                            <td>@a.EntityName</td>
+                            <td>@(a.UserDisplayName ?? "System")</td>
+                            <td>@a.Timestamp.ToString("dd MMM yyyy HH:mm")</td>
+                            <td><span class="badge-status badge-status-completed">@a.Status</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

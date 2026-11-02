@@ -1,0 +1,26 @@
+@model List<Volunteer>
+@{
+    Layout = "_DashboardLayout";
+}
+
+<p class="text-muted-custom mb-3">All volunteer registrations across the platform.</p>
+
+<div class="card-brand p-0">
+    <div class="table-responsive-cards">
+        <table class="table table-brand mb-0">
+            <thead><tr><th>Name</th><th>Contact</th><th>Area</th><th>Status</th><th>Registered</th></tr></thead>
+            <tbody>
+                @foreach (var v in Model)
+                {
+                    <tr>
+                        <td>@v.FullName</td>
+                        <td class="small">@v.Email<br />@v.Phone</td>
+                        <td>@v.PreferredArea</td>
+                        <td><span class="badge-status @(v.Status == VolunteerStatus.Approved ? "badge-status-completed" : v.Status == VolunteerStatus.Declined ? "badge-status-planning" : "badge-status-upcoming")">@v.Status</span></td>
+                        <td>@v.RegistrationDate.ToString("dd MMM yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

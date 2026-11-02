@@ -1,0 +1,37 @@
+@model List<ReliefProject>
+@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <p class="text-muted-custom mb-0">Manage relief projects and track their progress.</p>
+    <a asp-controller="EmployeeDashboard" asp-action="CreateProject" class="btn btn-brand-primary btn-sm"><i class="bi bi-plus-lg"></i> New Project</a>
+</div>
+
+<div class="card-brand p-0">
+    <div class="table-responsive-cards">
+        <table class="table table-brand mb-0">
+            <thead><tr><th>Name</th><th>Location</th><th>Category</th><th>Status</th><th>Progress</th><th>Budget</th><th></th></tr></thead>
+            <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        <td>@p.Name</td>
+                        <td>@p.Location</td>
+                        <td>@p.CategoryLabel</td>
+                        <td><span class="badge-status badge-status-@p.Status.ToString().ToLower()">@p.StatusLabel</span></td>
+                        <td style="min-width:120px;">
+                            <div class="progress progress-brand"><div class="progress-bar" style="width:@p.ProgressPercentage%"></div></div>
+                        </td>
+                        <td>@($"R{p.Budget:N0}")</td>
+                        <td>
+                            <a asp-controller="EmployeeDashboard" asp-action="EditProject" asp-route-id="@p.Id" class="small btn-link-underline">Edit</a>
+                            &nbsp;|&nbsp;
+                            <a asp-controller="Projects" asp-action="Details" asp-route-id="@p.Id" class="small btn-link-underline" target="_blank">View</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

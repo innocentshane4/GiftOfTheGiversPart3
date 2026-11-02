@@ -1,0 +1,18 @@
+@model ApplicationUser
+@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="card-brand p-4" style="max-width:560px;">
+    <h5 class="mb-3">My Profile</h5>
+    <dl class="row small mb-0">
+        <dt class="col-4">Full Name</dt><dd class="col-8">@Model.FullName</dd>
+        <dt class="col-4">Email</dt><dd class="col-8">@Model.Email</dd>
+        <dt class="col-4">Phone</dt><dd class="col-8">@(Model.PhoneNumber ?? "—")</dd>
+        <dt class="col-4">Role</dt><dd class="col-8">Donor</dd>
+        <dt class="col-4">Member Since</dt><dd class="col-8">@Model.CreatedDate.ToString("dd MMM yyyy")</dd>
+    </dl>
+    <div class="alert alert-light small mt-3 mb-0" style="background-color:var(--color-light-blue); border:none;">
+        Profile editing is not available in this prototype build.
+    </div>
+</div>

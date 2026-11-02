@@ -1,0 +1,128 @@
+@model DonorDashboardViewModel
+@{
+    Layout = "_DashboardLayout";
+}
+
+<p class="text-muted-custom mb-4">
+    Welcome back, @Model.DonorName! Here's a summary of your giving.
+</p>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card-brand p-4 stat-tile">
+            <div class="stat-tile-label">Total Donations</div>
+            <div class="stat-tile-value">
+                @($"R{Model.TotalDonations:N2}")
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card-brand p-4 stat-tile">
+            <div class="stat-tile-label">Most Recent Donation</div>
+            <div class="stat-tile-value">
+                @(Model.MostRecentDonation != null
+                                ? $"R{Model.MostRecentDonation.Amount:N2}"
+                                : "—")
+            </div>
+
+            <div class="small text-muted-custom mt-1">
+                @(Model.MostRecentDonation?.DonationDate.ToString("dd MMM yyyy") ?? "No donations yet")
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card-brand p-4 stat-tile">
+            <div class="stat-tile-label">Tax Certificates</div>
+            <div class="stat-tile-value">
+                @Model.TaxCertificatesCount
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card-brand p-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0">Recent Donations</h5>
+
+        <a asp-controller="DonorDashboard"
+           asp-action="MyDonations"
+           class="small btn-link-underline">
+            View All
+        </a>
+    </div>
+
+    @if (!Model.RecentDonations.Any())
+    {
+        <p class="text-muted-custom small mb-0">
+            You haven't made any donations yet.
+            <a asp-controller="Donations"
+               asp-action="Donate">
+                Make your first donation
+            </a>.
+        </p>
+    }
+    else
+    {
+        <div class="table-responsive-cards">
+            <table class="table table-brand">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Reference</th>
+                        <th>Amount</th>
+                        <th>Currency</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var d in Model.RecentDonations)
+                    {
+                        <tr>
+                            <td>
+                                @d.DonationDate.ToString("dd MMM yyyy")
+                            </td>
+
+                            <td>
+                                @d.ReferenceNumber
+                            </td>
+
+                            <td>
+                                @d.Amount.ToString("N2")
+                            </td>
+
+                            <td>
+                                @d.Currency
+                            </td>
+
+                            <td>
+                                @(d.DonationType == DonationType.Recurring
+                                                        ? "Recurring"
+                                                        : "One-time")
+                    </td>
+
+                            <td>
+                                <span class="badge-status badge-status-completed">
+                                    @d.StatusLabel
+                                </span>
+                            </td>
+
+                            <td>
+                                <a asp-controller="Donations"
+                                   asp-action="Confirmation"
+                                   asp-route-id="@d.Id"
+                                   class="small btn-link-underline">
+                                    View
+                                </a>
+                            </td>
+                        </tr>
+                                }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

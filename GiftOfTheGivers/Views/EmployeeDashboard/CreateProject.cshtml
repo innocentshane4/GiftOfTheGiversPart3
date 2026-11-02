@@ -1,0 +1,58 @@
+@model ProjectFormViewModel
+@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="card-brand p-4" style="max-width:720px;">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert" style="display:@(ViewData.ModelState.IsValid ? "none" : "block")"></div>
+    <form asp-controller="EmployeeDashboard" asp-action="CreateProject" method="post">
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label"></label>
+            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="Description" class="text-danger small"></span>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-md-6">
+                <label asp-for="Location" class="form-label"></label>
+                <input asp-for="Location" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Category" class="form-label"></label>
+                <select asp-for="Category" asp-items="Html.GetEnumSelectList<ProjectCategory>()" class="form-select"></select>
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-md-6">
+                <label asp-for="StartDate" class="form-label"></label>
+                <input asp-for="StartDate" type="date" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label asp-for="ExpectedCompletionDate" class="form-label"></label>
+                <input asp-for="ExpectedCompletionDate" type="date" class="form-control" />
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-md-4">
+                <label asp-for="Budget" class="form-label"></label>
+                <input asp-for="Budget" type="number" step="0.01" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label asp-for="Status" class="form-label"></label>
+                <select asp-for="Status" asp-items="Html.GetEnumSelectList<ProjectStatus>()" class="form-select"></select>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="ProgressPercentage" class="form-label"></label>
+                <input asp-for="ProgressPercentage" type="number" min="0" max="100" class="form-control" />
+            </div>
+        </div>
+        <button type="submit" class="btn btn-brand-primary">Create Project</button>
+        <a asp-controller="EmployeeDashboard" asp-action="Projects" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+</div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

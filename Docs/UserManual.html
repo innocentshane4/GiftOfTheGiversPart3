@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gift of the Givers — User Manual</title>
+  <style>
+    /* ---- Reset & base -------------------------------------------------- */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      color: #1a1a1a;
+      background: #f5f5f5;
+    }
+
+    /* ---- Page wrapper -------------------------------------------------- */
+    .page-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 0 0 60px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.10);
+    }
+
+    /* ---- Cover --------------------------------------------------------- */
+    .cover {
+      background: #1a5276;
+      color: #ffffff;
+      padding: 60px 50px 50px;
+      border-bottom: 6px solid #d4ac0d;
+    }
+    .cover h1 {
+      font-size: 30px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .cover .subtitle {
+      font-size: 16px;
+      opacity: .85;
+    }
+    .cover .meta {
+      margin-top: 24px;
+      font-size: 13px;
+      opacity: .70;
+    }
+
+    /* ---- Table of contents -------------------------------------------- */
+    .toc {
+      background: #eaf0fb;
+      padding: 32px 50px;
+      border-bottom: 1px solid #d0d8e8;
+    }
+    .toc h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1a5276;
+      margin-bottom: 14px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .toc ol {
+      padding-left: 18px;
+    }
+    .toc li {
+      margin-bottom: 4px;
+    }
+    .toc a {
+      color: #1a5276;
+      text-decoration: none;
+    }
+    .toc a:hover { text-decoration: underline; }
+
+    /* ---- Section ------------------------------------------------------- */
+    .section {
+      padding: 40px 50px 0;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1a5276;
+      border-bottom: 3px solid #1a5276;
+      padding-bottom: 8px;
+      margin-bottom: 24px;
+    }
+
+    /* ---- Sub-section -------------------------------------------------- */
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e3a5f;
+      margin-top: 30px;
+      margin-bottom: 10px;
+    }
+
+    p { margin-bottom: 12px; }
+
+    /* ---- Numbered steps ------------------------------------------------ */
+    .steps {
+      counter-reset: step;
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 20px;
+    }
+    .steps li {
+      counter-increment: step;
+      display: flex;
+      gap: 14px;
+      margin-bottom: 14px;
+      align-items: flex-start;
+    }
+    .steps li::before {
+      content: counter(step);
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      background: #1a5276;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    /* ---- Tip / Note boxes --------------------------------------------- */
+    .tip {
+      background: #eafaf1;
+      border-left: 4px solid #27ae60;
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    .note {
+      background: #fef9e7;
+      border-left: 4px solid #d4ac0d;
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    .warning {
+      background: #fdedec;
+      border-left: 4px solid #c0392b;
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+
+    .tip strong, .note strong, .warning strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    /* ---- Screenshot placeholder --------------------------------------- */
+    .screenshot {
+      border: 2px dashed #b0bec5;
+      background: #f8f9fa;
+      padding: 30px 20px;
+      text-align: center;
+      color: #546e7a;
+      font-size: 13px;
+      border-radius: 6px;
+      margin: 16px 0 20px;
+    }
+    .screenshot strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 4px;
+      color: #1a5276;
+    }
+
+    /* ---- Table --------------------------------------------------------- */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 20px;
+      font-size: 14px;
+    }
+    th {
+      background: #1a5276;
+      color: #fff;
+      padding: 10px 14px;
+      text-align: left;
+    }
+    td {
+      padding: 9px 14px;
+      border-bottom: 1px solid #e0e0e0;
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #f8f9fa; }
+
+    /* ---- Footer -------------------------------------------------------- */
+    .footer {
+      margin-top: 50px;
+      padding: 20px 50px;
+      border-top: 1px solid #e0e0e0;
+      font-size: 12px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- Cover -------------------------------------------------------------- -->
+  <div class="cover">
+    <h1>Gift of the Givers Foundation</h1>
+    <div class="subtitle">Donor Management Platform — User Manual</div>
+    <div class="meta">
+      Version 1.0 &nbsp;|&nbsp; October 2026 &nbsp;|&nbsp; For internal staff use
+    </div>
+  </div>
+
+  <!-- Table of contents -------------------------------------------------- -->
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#sec1">1. Introduction</a></li>
+      <li><a href="#sec2">2. Accessing the Platform</a></li>
+      <li><a href="#sec3">3. Logging In</a>
+        <ol>
+          <li><a href="#sec3-1">3.1 Employee Login</a></li>
+          <li><a href="#sec3-2">3.2 Registered Donor Login</a></li>
+          <li><a href="#sec3-3">3.3 Anonymous / Guest Access</a></li>
+        </ol>
+      </li>
+      <li><a href="#sec4">4. Posting a Project Update (Employees)</a></li>
+      <li><a href="#sec5">5. Making a Donation</a>
+        <ol>
+          <li><a href="#sec5-1">5.1 Anonymous Donation</a></li>
+          <li><a href="#sec5-2">5.2 Once-off Identified Donation</a></li>
+          <li><a href="#sec5-3">5.3 Recurring Donation</a></li>
+          <li><a href="#sec5-4">5.4 Donating in a Different Currency</a></li>
+        </ol>
+      </li>
+      <li><a href="#sec6">6. Generating and Downloading a Tax Certificate</a></li>
+      <li><a href="#sec7">7. Registering as a Volunteer</a></li>
+      <li><a href="#sec8">8. Frequently Asked Questions</a></li>
+    </ol>
+  </div>
+
+  <!-- Section 1 ---------------------------------------------------------- -->
+  <div class="section" id="sec1">
+    <div class="section-title">1. Introduction</div>
+
+    <p>
+      This manual explains how to use the Gift of the Givers Donor Management
+      Platform. The platform allows foundation staff, registered donors, and
+      members of the public to:
+    </p>
+    <ul style="padding-left:22px; margin-bottom:14px;">
+      <li>Make donations in South African Rand (ZAR), US Dollars (USD), or Euros (EUR)</li>
+      <li>Choose once-off or recurring giving</li>
+      <li>Support a specific relief project or donate to the general fund</li>
+      <li>Download a tax certificate (Section 18A) for eligible donations</li>
+      <li>Register as a volunteer</li>
+      <li>Employees: post project updates visible to the public</li>
+    </ul>
+
+    <div class="note">
+      <strong>Note</strong>
+      No real payment is processed by this prototype. Donations are recorded for
+      administrative and reporting purposes only.
+    </div>
+  </div>
+
+  <!-- Section 2 ---------------------------------------------------------- -->
+  <div class="section" id="sec2">
+    <div class="section-title">2. Accessing the Platform</div>
+
+    <p>Open any web browser (Chrome, Edge, Firefox, or Safari) and go to:</p>
+    <p style="font-family:monospace; font-size:15px; background:#f0f0f0; padding:10px 16px; border-radius:4px; display:inline-block;">
+      https://giftofthegivers.azurewebsites.net
+    </p>
+
+    <div class="screenshot">
+      <strong>Screenshot placeholder — Home page</strong>
+      Take a screenshot of the home page here and paste it in place of this box.
+      It should show the hero banner, navigation bar, and the "Donate Now" button.
+    </div>
+
+    <p>
+      The navigation bar at the top provides links to: <strong>Home</strong>,
+      <strong>Projects</strong>, <strong>Donate</strong>, <strong>Volunteer</strong>,
+      and (when logged in) your dashboard.
+    </p>
+  </div>
+
+  <!-- Section 3 ---------------------------------------------------------- -->
+  <div class="section" id="sec3">
+    <div class="section-title">3. Logging In</div>
+
+    <h3 id="sec3-1">3.1 Employee Login</h3>
+    <p>
+      Employees are given login credentials by a system administrator. Use the
+      <strong>Login</strong> link in the top-right corner of any page.
+    </p>
+
+    <ol class="steps">
+      <li>Click <strong>Login</strong> in the navigation bar.</li>
+      <li>
+        Enter your work email address (e.g. <em>employee@gotg.org</em>) and
+        your password.
+      </li>
+      <li>Click the blue <strong>Log In</strong> button.</li>
+      <li>
+        You will be redirected to the <strong>Employee Dashboard</strong>, which
+        shows a summary of donations, active projects, and volunteer registrations.
+      </li>
+    </ol>
+
+    <div class="screenshot">
+      <strong>Screenshot placeholder — Employee login form</strong>
+      Paste a screenshot of /Account/Login showing the email and password fields.
+    </div>
+
+    <div class="screenshot">
+      <strong>Screenshot placeholder — Employee dashboard after login</strong>
+      Paste a screenshot of the /EmployeeDashboard/Index page.
+    </div>
+
+    <div class="tip">
+      <strong>Tip</strong>
+      If you see "Access Denied" after logging in, your account has not been
+      assigned the Employee role. Contact your system administrator.
+    </div>
+
+    <h3 id="sec3-2">3.2 Registered Donor Login</h3>
+    <p>
+      Donors who have created an account can log in to view their donation history
+      and download tax certificates.
+    </p>
+
+    <ol class="steps">
+      <li>Click <strong>Login</strong> in the navigation bar.</li>
+      <li>Enter the email address and password you used when you registered.</li>
+      <li>Click <strong>Log In</strong>.</li>
+      <li>
+        You will be taken to the <strong>Donor Dashboard</strong>, which shows
+        your recent donations, tax certificates, and profile details.
+      </li>
+    </ol>
+
+    <div class="screenshot">
+      <strong>Screenshot placeholder — Donor dashboard</strong>
+      Paste a screenshot of /DonorDashboard/Index.
+    </div>
+
+    <p>
+      If you do not yet have an account, click <strong>Register</strong> on the
+      login page. Fill in your full name, email address, and a password that meets
+      the complexity requirements shown on screen.
+    </p>
+
+    <div class="screenshot">
+      <strong>Screenshot placeholder — Donor registration form</strong>
+      Paste a screenshot of /Account/Register.
+    </div>
+
+    <h3 id="sec3-3">3.3 Anonymous / Guest Access</h3>
+    <p>
+      You do not need an account to make a donation or register as a volunteer.
+      Simply visit the site and use the <strong>Donate</strong> or
+      <strong>Volunteer</strong> links in the navigation bar. You will be asked
+      to enter your name and email address directly on the form.
+    </p>
+
+    <div class="note">
+      <strong>Note</strong>
+      Anonymous donors cannot receive a tax certificate because the certificate
+      must be linked to an identified donor on record.
+    </div>
+  </div>
+
+  <!-- Section 4 ---------------------------------------------------------- -->
+  <div class="section" id="sec4">
+    <div class="section-title">4. Posting a Project Update (Employees)</div>
+
+    <p>
+      Employees can post updates on active relief projects. Updates are visible
+      to the public on the Projects page.
+    </p>
+
+    <ol class="steps">
+      <li>Log in as an employee (see Section 3.1).</li>
+      <li>
+        From the Employee Dashboard, click <strong>Projects</strong> in the
+        left-hand menu, or navigate to
+        <em>Employee Dashboard → Projects</em>.
+      </li>
+      <li>
+        Find the project you want to update in the list. Click its name to open
+        the project detail page.
+      </li>
+      <li>Click the <strong>Post Update</strong> button.</li>
+      <li>
+        Fill in the <strong>Title</strong> and <strong>Content</strong> fields.
+        The title is a short summary (e.g. "Week 3 Progress Report") and the
+        content can be as detailed as needed.
+      </li>
+      <li>Click <strong>Save Update</strong>.</li>
+      <li>
+        The update will immediately appear on the public Projects page under the
+        relevant project.
+      </li>
+    </ol>
+
+    <div class="screenshot">
+      <strong>Screenshot placeholder — Create Project Update form</strong>
+      Paste a screenshot of /EmployeeDashboard/CreateProjectUpdate.
+    </div>
+
+    <div class="tip">
+      <strong>Tip</strong>
+      You can view all updates for a project by clicking <strong>View Updates</strong>
+      from the Projects list in your dashboard.
+    </div>
+
+    <div class="warning">
+      <strong>Important</strong>
+      Project updates cannot be edited or deleted after posting. Check your
+      content carefully before saving.
+    </div>
+  </div>
+
+  <!-- Section 5 ---------------------------------------------------------- -->
+  <div class="section" id="sec5">
+    <div class="section-title">5. Making a Donation</div>
+
+    <p>
+      To open the donation form, click <strong>Donate</strong> in the navigation
+      bar or click any "Donate Now" button on the home or projects page.
+    </p>
+
+    <div class="screenshot">
+      <strong>Screenshot placeholder — Donate form (top half)</strong>
+      Paste a screenshot of /Donations/Donate showing the amount options and
+      currency selector.
+    </div>
+
+    <h3 id="sec5-1">5.1 Anonymous Donation</h3>
+
+    <ol class="steps">
+      <li>Open the donation form.</li>
+      <li>Select a preset amount (<strong>R50</strong>, <strong>R100</strong>, <strong>R250</strong>, <strong>R500</strong>) or type your own in the <strong>Custom amount</strong> field.</li>
+      <li>Leave the currency as <strong>ZAR</strong> (default) or change it (see 5.4).</li>
+      <li>Enter your full name and email address — these are captured for internal records only and will not be published.</li>
+      <li>Tick the <strong>Make this donation anonymous</strong> checkbox.</li>
+      <li>Optionally select a <strong>Relief Project</strong> from the dropdown, or leave it blank to support the general fund.</li>
+      <li>Click <strong>Confirm Donation</strong>.</li>
+      <li>
+        A confirmation page will appear showing your unique
+        <strong>reference number</strong> (e.g. GG-20261026-483927). Save this
+        for your records.
+      </li>
+    </ol>
+
+    <div class="note">
+      <strong>Note — Anonymous vs Once-off</strong>
+      An anonymous donation is processed as a once-off donation. Recurring
+      donations require a registered and identified donor account. If you tick
+      "anonymous" and also select "Recurring", the form will display an error.
+    </div>
+
+    <div class="screenshot">
+      <strong>Screenshot placeholder — Donation confirmation page</strong>
+      Paste a screenshot of /Donations/Confirmation showing the reference number.
+    </div>
+
+    <h3 id="sec5-2">5.2 Once-off Identified Donation</h3>
+
+    <ol class="steps">
+      <li>Open the donation form (log in first if you want the donation linked to your account, so you can download a tax certificate later).</li>
+      <li>Select or enter a donation amount.</li>
+      <li>Choose your currency.</li>
+      <li>Enter your full name and email address.</li>
+      <li>Leave the <strong>Make this donation anonymous</strong> checkbox <em>unticked</em>.</li>
+      <li>Under <strong>Donation Type</strong>, select <strong>Once-off</strong>.</li>
+      <li>Optionally choose a relief project.</li>
+      <li>Click <strong>Confirm Donation</strong> and note your reference number.</li>
+    </ol>
+
+    <h3 id="sec5-3">5.3 Recurring Donation</h3>
+
+    <p>
+      A recurring donation requires a registered, logged-in donor account because
+      the system needs to identify you for scheduled payments.
+    </p>
+
+    <ol class="steps">
+      <li>Log in to your donor account (see Section 3.2).</li>
+      <li>Open the donation form.</li>
+      <li>Select or enter a donation amount.</li>
+      <li>Under <strong>Donation Type</strong>, select <strong>Recurring</strong>.</li>
+      <li>
+        The <strong>anonymous</strong> checkbox will be greyed out — recurring
+        donations must always be identified.
+      </li>
+      <li>Complete the remaining fields and click <strong>Confirm Donation</strong>.</li>
+    </ol>
+
+    <div class="tip">
+      <strong>Tip</strong>
+      Registered donors can view all their recurring schedules from
+      <em>Donor Dashboard → My Donations</em>.
+    </div>
+
+    <h3 id="sec5-4">5.4 Donating in a Different Currency</h3>
+
+    <p>
+      The platform supports three currencies: South African Rand (ZAR), US Dollars
+      (USD), and Euros (EUR).
+    </p>
+
+    <ol class="steps">
+      <li>Open the donation form.</li>
+      <li>
+        Click the <strong>Currency</strong> dropdown (default shows ZAR) and
+        select <strong>USD</strong> or <strong>EUR</strong>.
+      </li>
+      <li>
+        The preset amount buttons will remain in their numeric values; enter your
+        desired amount in the <strong>Custom amount</strong> field.
+      </li>
+      <li>Complete the rest of the form as normal.</li>
+    </ol>
+
+    <div class="screenshot">
+      <strong>Screenshot placeholder — Currency selector dropdown</strong>
+      Paste a screenshot of the currency dropdown on the donation form.
+    </div>
+
+    <table>
+      <tr><th>Currency</th><th>Code</th><th>Symbol</th></tr>
+      <tr><td>South African Rand</td><td>ZAR</td><td>R</td></tr>
+      <tr><td>US Dollar</td><td>USD</td><td>$</td></tr>
+      <tr><td>Euro</td><td>EUR</td><td>€</td></tr>
+    </table>
+  </div>
+
+  <!-- Section 6 ---------------------------------------------------------- -->
+  <div class="section" id="sec6">
+    <div class="section-title">6. Generating and Downloading a Tax Certificate</div>
+
+    <p>
+      Tax certificates (Section 18A) are available for identified, non-anonymous
+      donations. You must be logged in as the donor who made the donation.
+    </p>
+
+    <ol class="steps">
+      <li>Log in to your donor account.</li>
+      <li>
+        Click <strong>Donor Dashboard</strong> in the navigation bar and then
+        select <strong>Tax Certificates</strong> from the menu.
+      </li>
+      <li>
+        Your eligible donations are listed. Find the donation for which you need
+        a certificate and click <strong>Generate Certificate</strong> next to it.
+      </li>
+      <li>
+        The certificate is created (each donation generates exactly one
+        certificate, so repeated clicks do not produce duplicates).
+      </li>
+      <li>
+        A printable page will open showing the certificate number, donation
+        amount, date, and donor details.
+      </li>
+      <li>
+        Use your browser's print function (<strong>Ctrl + P</strong> on Windows
+        or <strong>Cmd + P</strong> on Mac) to print or save the certificate as
+        a PDF.
+      </li>
+    </ol>
+
+    <div class="screenshot">
+      <strong>Screenshot placeholder — Tax Certificates list on Donor Dashboard</strong>
+      Paste a screenshot of /DonorDashboard/TaxCertificates.
+    </div>
+
+    <div class="screenshot">
+      <strong>Screenshot placeholder — Tax Certificate detail page</strong>
+      Paste a screenshot of /Donations/TaxCertificate showing the certificate number.
+    </div>
+
+    <div class="warning">
+      <strong>Important</strong>
+      Anonymous donations are not eligible for a tax certificate. If you need a
+      certificate, ensure you did not tick the anonymous checkbox when donating.
+    </div>
+
+    <p>
+      Employees can also view and access all tax certificates from
+      <em>Employee Dashboard → Tax Certificates</em>.
+    </p>
+  </div>
+
+  <!-- Section 7 ---------------------------------------------------------- -->
+  <div class="section" id="sec7">
+    <div class="section-title">7. Registering as a Volunteer</div>
+
+    <p>
+      Anyone can register to volunteer with Gift of the Givers — no account is
+      required.
+    </p>
+
+    <ol class="steps">
+      <li>Click <strong>Volunteer</strong> in the navigation bar.</li>
+      <li>
+        Fill in the registration form:
+        <ul style="padding-left:20px; margin-top:6px;">
+          <li><strong>Full Name</strong></li>
+          <li><strong>Email Address</strong></li>
+          <li><strong>Phone Number</strong></li>
+          <li><strong>Skills / Availability</strong> — describe what you can offer</li>
+          <li><strong>Preferred Projects</strong> (optional)</li>
+        </ul>
+      </li>
+      <li>
+        Tick the consent checkbox to confirm that you agree to being contacted
+        by foundation staff.
+      </li>
+      <li>Click <strong>Submit Registration</strong>.</li>
+      <li>
+        A confirmation message will appear on screen. Foundation staff will
+        contact you when opportunities that match your skills arise.
+      </li>
+    </ol>
+
+    <div class="screenshot">
+      <strong>Screenshot placeholder — Volunteer registration form</strong>
+      Paste a screenshot of /Volunteers/Register.
+    </div>
+
+    <div class="tip">
+      <strong>Tip — For employees</strong>
+      New volunteer registrations appear in the <em>Employee Dashboard →
+      Volunteers</em> list. You can view each registration to see contact
+      details and availability.
+    </div>
+  </div>
+
+  <!-- Section 8 ---------------------------------------------------------- -->
+  <div class="section" id="sec8">
+    <div class="section-title">8. Frequently Asked Questions</div>
+
+    <table>
+      <tr>
+        <th style="width:38%">Question</th>
+        <th>Answer</th>
+      </tr>
+      <tr>
+        <td>I forgot my password. What do I do?</td>
+        <td>
+          On the login page, click <strong>Forgot your password?</strong> and enter
+          your email address. You will receive a reset link. If the email does not
+          arrive within a few minutes, check your spam folder.
+        </td>
+      </tr>
+      <tr>
+        <td>Can I donate without creating an account?</td>
+        <td>
+          Yes. You can make a once-off or anonymous donation without registering.
+          You will not be able to download a tax certificate for an anonymous
+          donation.
+        </td>
+      </tr>
+      <tr>
+        <td>How do I stop a recurring donation?</td>
+        <td>
+          Log in, go to <em>Donor Dashboard → My Donations</em>, and contact
+          foundation staff. Cancellation of recurring schedules is currently
+          handled manually by an administrator.
+        </td>
+      </tr>
+      <tr>
+        <td>Why can I not select Recurring and Anonymous at the same time?</td>
+        <td>
+          A recurring donation requires an identified donor so that scheduled
+          contributions can be tracked. Anonymous recurring giving is therefore
+          not supported.
+        </td>
+      </tr>
+      <tr>
+        <td>I submitted a donation but did not receive a confirmation.</td>
+        <td>
+          Note down the URL in your browser after submission — it will contain your
+          donation ID (e.g. /Donations/Confirmation/42). If the page did not load,
+          contact foundation staff with the details of your donation.
+        </td>
+      </tr>
+      <tr>
+        <td>Can a tax certificate be reissued?</td>
+        <td>
+          The same certificate is returned each time you click Generate Certificate
+          for a given donation. It can be printed as many times as needed.
+        </td>
+      </tr>
+      <tr>
+        <td>I cannot log in as an employee.</td>
+        <td>
+          Ensure you are using the credentials provided by your administrator.
+          Employee accounts cannot be self-registered — they must be provisioned
+          by an admin through the Admin Dashboard.
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Footer ------------------------------------------------------------- -->
+  <div class="footer">
+    Gift of the Givers Foundation — Donor Management Platform &nbsp;|&nbsp;
+    User Manual v1.0 &nbsp;|&nbsp; October 2026 &nbsp;|&nbsp;
+    For technical support, contact your system administrator.
+  </div>
+
+</div>
+</body>
+</html>

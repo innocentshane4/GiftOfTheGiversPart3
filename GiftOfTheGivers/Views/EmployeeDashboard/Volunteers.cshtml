@@ -1,0 +1,36 @@
+@model List<Volunteer>
+@{
+    Layout = "_DashboardLayout";
+}
+
+<p class="text-muted-custom mb-3">Review volunteer registrations and update their status.</p>
+
+<div class="card-brand p-0">
+    <div class="table-responsive-cards">
+        <table class="table table-brand mb-0">
+            <thead><tr><th>Name</th><th>Contact</th><th>Skills</th><th>Availability</th><th>Area</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+                @foreach (var v in Model)
+                {
+                    <tr>
+                        <td>@v.FullName</td>
+                        <td class="small">@v.Email<br />@v.Phone</td>
+                        <td class="small">@v.Skills</td>
+                        <td>@v.Availability</td>
+                        <td>@v.PreferredArea</td>
+                        <td>
+                            <span class="badge-status @(v.Status == VolunteerStatus.Approved ? "badge-status-completed" : v.Status == VolunteerStatus.Declined ? "badge-status-planning" : "badge-status-upcoming")">@v.Status</span>
+                        </td>
+                        <td>
+                            <form asp-controller="EmployeeDashboard" asp-action="UpdateVolunteerStatus" method="post" class="d-flex gap-1">
+                                <input type="hidden" name="id" value="@v.Id" />
+                                <button type="submit" name="status" value="Approved" class="btn btn-sm btn-outline-success">Approve</button>
+                                <button type="submit" name="status" value="Declined" class="btn btn-sm btn-outline-danger">Decline</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

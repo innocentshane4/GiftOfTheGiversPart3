@@ -1,0 +1,230 @@
+@model Donation
+@{
+    ViewData["Title"] = "Tax Certificate";
+}
+
+<style>
+@@media print {
+    .no-print { display: none !important; }
+    body { background: white !important; }
+    .certificate-card { box-shadow: none !important; border: 1px solid #ccc !important; }
+}
+.cert-wrap {
+    max-width: 760px;
+    margin: 40px auto;
+    font-family: 'Inter', sans-serif;
+}
+.cert-header {
+    background: linear-gradient(135deg, #1a3a5c 0%, #e87722 100%);
+    color: #fff;
+    padding: 40px 48px 32px;
+    border-radius: 12px 12px 0 0;
+    position: relative;
+    overflow: hidden;
+}
+.cert-header::after {
+    content: '';
+    position: absolute;
+    right: -40px; top: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+}
+.cert-serial {
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    opacity: .75;
+    display: block;
+    margin-bottom: 8px;
+}
+.cert-org-name {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: .02em;
+    margin-bottom: 4px;
+}
+.cert-subtitle {
+    font-size: 13px;
+    opacity: .80;
+}
+.cert-body {
+    background: #fff;
+    padding: 40px 48px;
+    border-left: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+}
+.cert-section-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: #888;
+    margin-bottom: 4px;
+}
+.cert-section-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+.cert-amount-box {
+    background: #f5f8ff;
+    border: 1px solid #d0ddf0;
+    border-radius: 10px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 28px 0;
+}
+.cert-amount-number {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a3a5c;
+}
+.cert-amount-label {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 2px;
+}
+.cert-divider {
+    border: none;
+    border-top: 1px solid #e8e8e8;
+    margin: 28px 0;
+}
+.cert-footer {
+    background: #f8f9fa;
+    padding: 28px 48px 32px;
+    border: 1px solid #e0e0e0;
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+}
+.cert-sig-line {
+    border-top: 1px solid #bbb;
+    padding-top: 8px;
+    font-size: 12px;
+    color: #666;
+    margin-top: 40px;
+}
+.cert-npo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff3e0;
+    border: 1px solid #f5c07a;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #8a4f00;
+}
+.cert-legal {
+    font-size: 11px;
+    color: #aaa;
+    line-height: 1.6;
+    margin-top: 16px;
+}
+</style>
+
+<section class="container section-py">
+    <div class="cert-wrap">
+
+        <!-- Header -->
+        <div class="cert-header">
+            <span class="cert-serial">Section 18A Tax Certificate — No. @(Model.TaxCertificate?.CertificateNumber ?? "GG-TC-" + Model.Id.ToString("D6"))</span>
+            <div class="cert-org-name"><i class="bi bi-heart-fill me-2" style="color:#ffb347;"></i>Gift of the Givers</div>
+            <div class="cert-subtitle">Humanitarian Disaster Relief &amp; Community Recovery Organisation</div>
+        </div>
+
+        <!-- Body -->
+        <div class="cert-body">
+
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
+                <div>
+                    <p class="text-muted-custom small mb-1">This certifies that the following donation was received and is eligible for tax deduction under Section 18A of the Income Tax Act.</p>
+                </div>
+                <div class="cert-npo-badge">
+                    <i class="bi bi-patch-check-fill"></i> NPO Reg. No. 000-000 NPO
+                </div>
+            </div>
+
+            <!-- Amount highlight -->
+            <div class="cert-amount-box">
+                <div>
+                    <div class="cert-amount-label">Donation Amount</div>
+                    <div class="cert-amount-number">@Model.Currency @Model.Amount.ToString("N2")</div>
+                </div>
+                <div class="text-end">
+                    <div class="cert-amount-label">Date Received</div>
+                    <div class="cert-section-value">@Model.DonationDate.ToString("dd MMMM yyyy")</div>
+                </div>
+            </div>
+
+            <hr class="cert-divider" />
+
+            <!-- Details grid -->
+            <div class="row g-4">
+                <div class="col-sm-6">
+                    <div class="cert-section-label">Certificate Number</div>
+                    <div class="cert-section-value">@(Model.TaxCertificate?.CertificateNumber ?? "GG-TC-" + Model.Id.ToString("D6"))</div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="cert-section-label">Donation Reference</div>
+                    <div class="cert-section-value">@Model.ReferenceNumber</div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="cert-section-label">Donor Name</div>
+                    <div class="cert-section-value">@(Model.DonorFullName ?? Model.Donor?.User?.FullName ?? "—")</div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="cert-section-label">Donation Type</div>
+                    <div class="cert-section-value">@(Model.DonationType == DonationType.Recurring ? "Recurring Contribution" : "Once-off Donation")</div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="cert-section-label">Relief Project</div>
+                    <div class="cert-section-value">@(Model.ReliefProject?.Name ?? "General Fund")</div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="cert-section-label">Date Issued</div>
+                    <div class="cert-section-value">@(Model.TaxCertificate?.IssuedDate.ToString("dd MMMM yyyy") ?? DateTime.UtcNow.ToString("dd MMMM yyyy"))</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer / signatures -->
+        <div class="cert-footer">
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="cert-sig-line">
+                        Authorised Signatory<br />
+                        <strong>Gift of the Givers Foundation</strong>
+                    </div>
+                </div>
+                <div class="col-sm-7 text-sm-end">
+                    <div class="cert-sig-line">
+                        PBO Approval No. 000/000<br />
+                        <strong>Section 18A Approved Organisation</strong>
+                    </div>
+                </div>
+            </div>
+            <p class="cert-legal">
+                This certificate is issued in terms of Section 18A of the Income Tax Act, No. 58 of 1962, and confirms that the donation
+                described above was made to an approved public benefit organisation. Retain this certificate for submission to SARS.
+                Gift of the Givers is a registered NPO and PBO approved to issue Section 18A receipts.
+                Certificate No. @(Model.TaxCertificate?.CertificateNumber ?? "GG-TC-" + Model.Id.ToString("D6")) — Issued @(Model.TaxCertificate?.IssuedDate.ToString("dd MMMM yyyy") ?? DateTime.UtcNow.ToString("dd MMMM yyyy")).
+            </p>
+        </div>
+
+        <!-- Actions -->
+        <div class="d-flex gap-3 justify-content-center mt-4 no-print">
+            <button class="btn btn-brand-primary" onclick="window.print()">
+                <i class="bi bi-printer"></i> Print / Save as PDF
+            </button>
+            <a asp-controller="DonorDashboard" asp-action="TaxCertificates" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Back to Certificates
+            </a>
+        </div>
+
+    </div>
+</section>

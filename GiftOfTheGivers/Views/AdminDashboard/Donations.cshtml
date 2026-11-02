@@ -1,0 +1,58 @@
+@model List<Donation>
+
+@{
+    Layout = "_DashboardLayout";
+}
+
+<p class="text-muted-custom mb-3">All donations recorded across the platform.</p>
+
+<div class="card-brand p-0">
+    @if (Model == null || !Model.Any())
+    {
+        <p class="text-muted-custom p-3 mb-0">No donations have been recorded yet.</p>
+    }
+    else
+    {
+        <div class="table-responsive-cards">
+            <table class="table table-brand mb-0">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Reference</th>
+                        <th>Donor</th>
+                        <th>Project</th>
+                        <th>Amount</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model)
+                    {
+                        <tr>
+                            <td>@d.DonationDate.ToString("dd MMM yyyy")</td>
+                            <td>@d.ReferenceNumber</td>
+                            <td>
+                                @(d.IsAnonymous
+                                    ? "Anonymous"
+                                    : (d.DonorFullName ?? d.Donor?.User?.FullName ?? "—"))
+                            </td>
+                            <td>@(d.ReliefProject?.Name ?? "General Fund")</td>
+                            <td>@d.Currency @d.Amount.ToString("N2")</td>
+                            <td>
+                                @(d.DonationType == DonationType.Recurring
+                                    ? "Recurring"
+                                    : "One-time")
+                            </td>
+                            <td>
+                                <span class="badge-status badge-status-completed">
+                                    @d.StatusLabel
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

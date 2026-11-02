@@ -1,0 +1,35 @@
+@model List<ApplicationUser>
+@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <p class="text-muted-custom mb-0">All Donor, Employee and Admin accounts on the platform.</p>
+    <a asp-controller="AdminDashboard" asp-action="ProvisionStaffUser" class="btn btn-brand-primary btn-sm"><i class="bi bi-plus-lg"></i> Provision Staff Account</a>
+</div>
+
+<div class="card-brand p-0">
+    <div class="table-responsive-cards">
+        <table class="table table-brand mb-0">
+            <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Created</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+                @foreach (var u in Model)
+                {
+                    <tr>
+                        <td>@u.FullName</td>
+                        <td>@u.Email</td>
+                        <td><span class="badge-status badge-status-upcoming">@u.Role</span></td>
+                        <td>@u.CreatedDate.ToString("dd MMM yyyy")</td>
+                        <td><span class="badge-status @(u.IsActive ? "badge-status-completed" : "badge-status-planning")">@(u.IsActive ? "Active" : "Deactivated")</span></td>
+                        <td>
+                            <form asp-controller="AdminDashboard" asp-action="ToggleUserActive" method="post">
+                                <input type="hidden" name="id" value="@u.Id" />
+                                <button type="submit" class="btn btn-sm btn-outline-secondary">@(u.IsActive ? "Deactivate" : "Activate")</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

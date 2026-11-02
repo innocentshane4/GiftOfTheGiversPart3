@@ -1,0 +1,439 @@
+@model HomeIndexViewModel
+@{
+    ViewData["Title"] = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+.home-wrap {
+    display: flex;
+    min-height: calc(100vh - 72px);
+}
+
+/* ---- Left sidebar nav ---- */
+.home-sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    padding: 40px 24px;
+    background: #fff;
+    border-right: 1px solid #ececec;
+    position: sticky;
+    top: 72px;
+    height: calc(100vh - 72px);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+.home-sidebar .sidebar-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 16px;
+}
+.home-sidebar .side-link {
+    display: block;
+    padding: 10px 12px;
+    border-radius: 6px;
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    margin-bottom: 2px;
+    transition: background .15s;
+}
+.home-sidebar .side-link:hover { background: #f5f5f5; }
+.home-sidebar .side-link.active {
+    color: var(--color-primary-orange);
+    background: #fff4ee;
+    border-left: 3px solid var(--color-primary-orange);
+    padding-left: 9px;
+}
+.home-sidebar .scroll-hint {
+    margin-top: auto;
+    padding-top: 24px;
+    font-size: 11px;
+    color: #aaa;
+}
+.scroll-arrow {
+    display: block;
+    width: 24px;
+    height: 24px;
+    margin-top: 6px;
+    animation: bounceDown 1.6s infinite;
+    color: var(--color-primary-orange);
+    font-size: 18px;
+}
+@@keyframes bounceDown {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(6px); }
+}
+
+/* ---- Main content ---- */
+.home-main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 32px 40px;
+    background: #f5f6fa;
+}
+
+/* ---- Hero card ---- */
+.hero-card {
+    background: linear-gradient(130deg, #1a3a5c 0%, #1e4976 100%);
+    border-radius: 16px;
+    padding: 56px 52px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+.hero-card::before {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.04);
+}
+.hero-tag {
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--color-primary-orange);
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+.hero-card h1 {
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1.15;
+    color: #fff;
+    margin-bottom: 16px;
+}
+.hero-card p {
+    color: rgba(255,255,255,.75);
+    font-size: 15px;
+    margin-bottom: 28px;
+    max-width: 380px;
+}
+.hero-image-slot {
+    background: rgba(255,255,255,.07);
+    border-radius: 12px;
+    aspect-ratio: 4/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,.35);
+    font-size: 13px;
+    text-align: center;
+    overflow: hidden;
+}
+.hero-image-slot img {
+    width: 100%; height: 100%; object-fit: cover;
+}
+
+/* ---- Donate banner ---- */
+.donate-banner {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 32px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+}
+.donate-banner-icon {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: #fff0ea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--color-primary-orange);
+    font-size: 18px;
+}
+.donate-banner-text strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+.donate-banner-text span {
+    font-size: 13px;
+    color: #888;
+}
+.btn-donate-banner {
+    background: var(--color-primary-orange);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-weight: 600;
+    font-size: 14px;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: opacity .15s;
+}
+.btn-donate-banner:hover { opacity: .88; color: #fff; }
+
+/* ---- Section headings ---- */
+.section-heading {
+    text-align: center;
+    margin-bottom: 32px;
+}
+.section-heading h2 { font-size: 26px; font-weight: 700; color: #1a1a1a; }
+.section-heading p  { color: #888; font-size: 14px; margin-top: 6px; }
+
+/* ---- How We Help cards ---- */
+.help-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+}
+.help-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px 20px;
+    text-align: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,.05);
+}
+.help-card .hc-icon {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: #fff0ea;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+    font-size: 20px;
+    color: var(--color-primary-orange);
+}
+.help-card h5 { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+.help-card p  { font-size: 12px; color: #888; margin: 0; }
+
+/* ---- Impact stats ---- */
+.impact-strip {
+    background: #fff;
+    border-radius: 12px;
+    padding: 32px 40px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-bottom: 48px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.05);
+    text-align: center;
+}
+.impact-stat .is-num {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--color-primary-orange);
+}
+.impact-stat .is-label {
+    font-size: 12px;
+    color: #888;
+    margin-top: 4px;
+}
+
+/* ---- Project cards ---- */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+}
+.proj-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.05);
+}
+.proj-card h6 { font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+.proj-card .proj-loc { font-size: 12px; color: #888; margin-bottom: 10px; }
+.proj-card p  { font-size: 12px; color: #555; margin-bottom: 16px; }
+
+/* ---- Emergency banner ---- */
+.emergency-strip {
+    background: linear-gradient(130deg, #1a3a5c, #e87722);
+    border-radius: 16px;
+    padding: 40px 48px;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 40px;
+}
+.emergency-strip h3 { font-weight: 700; margin-bottom: 8px; }
+.emergency-strip p  { opacity: .8; margin-bottom: 20px; }
+
+@@media (max-width: 992px) {
+    .home-sidebar { display: none; }
+    .home-main { padding: 24px 20px; }
+    .hero-card { grid-template-columns: 1fr; }
+    .help-grid { grid-template-columns: repeat(2, 1fr); }
+    .projects-grid { grid-template-columns: 1fr; }
+    .impact-strip { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+
+<div class="home-wrap">
+
+    <!-- LEFT SIDEBAR -->
+    <nav class="home-sidebar" id="homeSidebar">
+        <div class="sidebar-label">Explore</div>
+        <a href="#hero"     class="side-link active" data-section="hero">Home</a>
+        <a asp-controller="Home"       asp-action="About"    class="side-link">About Us</a>
+        <a asp-controller="Projects"   asp-action="Index"    class="side-link">Relief Projects</a>
+        <a asp-controller="Volunteers" asp-action="Register" class="side-link">Volunteer</a>
+        <a asp-controller="Donations"  asp-action="Donate"   class="side-link">Donate</a>
+        <div class="scroll-hint">
+            Scroll to explore
+            <i class="bi bi-arrow-down scroll-arrow d-block"></i>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="home-main">
+
+        <!-- HERO -->
+        <section id="hero" class="hero-card mb-4">
+            <div>
+                <div class="hero-tag">Responding When It Matters</div>
+                <h1>Restoring hope.<br/>Rebuilding lives.</h1>
+                <p>Emergency relief and long-term support for communities facing crisis across the region.</p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a asp-controller="Projects" asp-action="Index" class="btn btn-brand-primary">Explore projects</a>
+                    <a asp-controller="Volunteers" asp-action="Register" class="btn btn-brand-outline" style="border-color:rgba(255,255,255,.4);color:#fff;">Become a volunteer</a>
+                </div>
+            </div>
+            <div class="hero-image-slot">
+                <img src="/images/hero-relief.jpg" alt="Gift of the Givers relief work"
+                     onerror="this.parentElement.innerHTML='<span>Photo from your relief work</span>'" />
+            </div>
+        </section>
+
+        <!-- DONATE BANNER -->
+        <div class="donate-banner">
+            <div class="donate-banner-icon"><i class="bi bi-heart-fill"></i></div>
+            <div class="donate-banner-text flex-grow-1">
+                <strong>Help deliver urgent support</strong>
+                <span>Your donation helps communities recover from disaster.</span>
+            </div>
+            <a asp-controller="Donations" asp-action="Donate" class="btn-donate-banner">Donate now &rarr;</a>
+        </div>
+
+        <!-- HOW WE HELP -->
+        <section id="how">
+            <div class="section-heading">
+                <h2>How We Help</h2>
+                <p>Four core programmes drive our response to communities in crisis.</p>
+            </div>
+            <div class="help-grid">
+                <div class="help-card">
+                    <div class="hc-icon"><i class="bi bi-house-heart"></i></div>
+                    <h5>Emergency Relief</h5>
+                    <p>Rapid-response shelter, water and essential supplies for disaster-affected communities.</p>
+                </div>
+                <div class="help-card">
+                    <div class="hc-icon"><i class="bi bi-basket"></i></div>
+                    <h5>Food Security</h5>
+                    <p>Weekly food parcels and sustainable community gardens for vulnerable households.</p>
+                </div>
+                <div class="help-card">
+                    <div class="hc-icon"><i class="bi bi-heart-pulse"></i></div>
+                    <h5>Medical Support</h5>
+                    <p>Mobile clinics and medicine distribution to underserved rural communities.</p>
+                </div>
+                <div class="help-card">
+                    <div class="hc-icon"><i class="bi bi-people"></i></div>
+                    <h5>Community Recovery</h5>
+                    <p>Long-term rebuilding support helping communities recover and thrive after crisis.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- IMPACT STATS -->
+        <div class="impact-strip">
+            <div class="impact-stat">
+                <div class="is-num">@Model.ReliefProjectsCount</div>
+                <div class="is-label">Relief Projects</div>
+            </div>
+            <div class="impact-stat">
+                <div class="is-num">@Model.PeopleAssistedCount.ToString("N0")</div>
+                <div class="is-label">People Assisted</div>
+            </div>
+            <div class="impact-stat">
+                <div class="is-num">@Model.VolunteersCount.ToString("N0")</div>
+                <div class="is-label">Volunteers</div>
+            </div>
+            <div class="impact-stat">
+                <div class="is-num">@Model.CountriesSupportedCount</div>
+                <div class="is-label">Countries Supported</div>
+            </div>
+        </div>
+
+        <!-- FEATURED PROJECTS -->
+        <section id="projects">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 style="font-size:22px; font-weight:700; margin:0;">Featured Relief Projects</h2>
+                <a asp-controller="Projects" asp-action="Index" style="font-size:13px; color:var(--color-primary-orange); text-decoration:none; font-weight:600;">
+                    View all <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+            <div class="projects-grid">
+                @foreach (var project in Model.FeaturedProjects)
+                {
+                    <div class="proj-card">
+                        <span class="badge-status badge-status-@project.Status.ToString().ToLower() mb-2">@project.StatusLabel</span>
+                        <h6 class="mt-2">@project.Name</h6>
+                        <div class="proj-loc"><i class="bi bi-geo-alt"></i> @project.Location</div>
+                        <p>@project.Description</p>
+                        <a asp-controller="Projects" asp-action="Details" asp-route-id="@project.Id"
+                           style="font-size:13px; color:var(--color-primary-orange); font-weight:600; text-decoration:none;">
+                            View details <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                }
+            </div>
+        </section>
+
+        <!-- EMERGENCY CTA -->
+        <div class="emergency-strip">
+            <h3>Need Emergency Assistance?</h3>
+            <p>Our teams are on standby to respond to disasters and urgent community needs across the region.</p>
+            <a asp-controller="Home" asp-action="About" class="btn btn-brand-primary">Contact Us</a>
+        </div>
+
+    </main>
+</div>
+
+@section Scripts {
+<script>
+// Highlight sidebar link based on scroll position
+const sections = document.querySelectorAll('#hero, #how, #projects');
+const links = document.querySelectorAll('.home-sidebar .side-link[data-section]');
+const mainEl = document.querySelector('.home-main');
+
+mainEl && mainEl.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+        if (s.offsetTop - mainEl.scrollTop <= 120) current = s.id;
+    });
+    links.forEach(l => {
+        l.classList.toggle('active', l.dataset.section === current);
+    });
+});
+
+// Smooth scroll for sidebar links
+document.querySelectorAll('.home-sidebar a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target && mainEl) mainEl.scrollTo({ top: target.offsetTop - 20, behavior: 'smooth' });
+    });
+});
+</script>
+}

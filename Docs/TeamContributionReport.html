@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gift of the Givers — Team Contribution Report</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.65;
+      color: #1a1a1a;
+      background: #f5f5f5;
+    }
+    .wrap {
+      max-width: 860px;
+      margin: 40px auto;
+      background: #ffffff;
+      padding: 0 0 50px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.10);
+    }
+    .header {
+      background: #1a5276;
+      color: #ffffff;
+      padding: 40px 50px 32px;
+      border-bottom: 5px solid #d4ac0d;
+    }
+    .header h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+    .header p  { font-size: 13px; opacity: .8; }
+
+    .body { padding: 36px 50px 0; }
+
+    /* overview grid */
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 30px;
+      background: #eaf0fb;
+      border-radius: 6px;
+      padding: 18px 22px;
+      margin-bottom: 28px;
+      font-size: 13px;
+    }
+    .meta-grid .label { color: #555; }
+    .meta-grid .value { font-weight: 600; }
+
+    h2 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a5276;
+      border-bottom: 2px solid #1a5276;
+      padding-bottom: 6px;
+      margin-bottom: 18px;
+      margin-top: 32px;
+    }
+
+    /* member cards */
+    .member-card {
+      border: 1px solid #d0d8e8;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .member-card-header {
+      background: #1e3a5f;
+      color: #ffffff;
+      padding: 12px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .member-card-header .name  { font-weight: 700; font-size: 15px; }
+    .member-card-header .role  {
+      font-size: 12px;
+      background: rgba(255,255,255,.18);
+      padding: 3px 10px;
+      border-radius: 12px;
+    }
+    .member-card-body { padding: 16px 18px; }
+
+    .contrib-list {
+      list-style: none;
+      padding: 0;
+    }
+    .contrib-list li {
+      padding: 5px 0;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .contrib-list li:last-child { border-bottom: none; }
+    .contrib-list li::before {
+      content: "✓";
+      color: #27ae60;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* commit evidence table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+    th {
+      background: #1a5276;
+      color: #fff;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    td {
+      padding: 7px 12px;
+      border-bottom: 1px solid #e8e8e8;
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #f8f9fa; }
+    code {
+      font-family: 'Consolas', 'Courier New', monospace;
+      background: #f0f0f0;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 12px;
+    }
+
+    .note {
+      background: #fef9e7;
+      border-left: 4px solid #d4ac0d;
+      padding: 10px 14px;
+      border-radius: 0 4px 4px 0;
+      font-size: 13px;
+      margin: 18px 0;
+    }
+
+    .footer {
+      margin-top: 40px;
+      padding: 16px 50px;
+      border-top: 1px solid #e0e0e0;
+      font-size: 11px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>Team Contribution Report</h1>
+    <p>Gift of the Givers — Applied Programming Module &nbsp;|&nbsp; Part 3 Submission</p>
+  </div>
+
+  <div class="body">
+
+    <!-- Project overview -------------------------------------------------- -->
+    <div class="meta-grid">
+      <div>
+        <div class="label">Module</div>
+        <div class="value">Applied Programming (APRO)</div>
+      </div>
+      <div>
+        <div class="label">Institution</div>
+        <div class="value">Rosebank College (IIE)</div>
+      </div>
+      <div>
+        <div class="label">Project</div>
+        <div class="value">Gift of the Givers Donor Management Platform</div>
+      </div>
+      <div>
+        <div class="label">Part</div>
+        <div class="value">Part 3 — Testing, Deployment and Handover</div>
+      </div>
+      <div>
+        <div class="label">Technology</div>
+        <div class="value">ASP.NET Core 8 MVC · Azure SQL · Azure DevOps</div>
+      </div>
+      <div>
+        <div class="label">Submission Date</div>
+        <div class="value">October 2026</div>
+      </div>
+    </div>
+
+    <!-- Member cards ------------------------------------------------------- -->
+    <h2>Individual Contributions</h2>
+
+    <!-- Member 1: You (lead developer) -->
+    <div class="member-card">
+      <div class="member-card-header">
+        <span class="name">Member 1 — [Your Full Name]</span>
+        <span class="role">Lead Developer / Full-Stack</span>
+      </div>
+      <div class="member-card-body">
+        <ul class="contrib-list">
+          <li>Designed and implemented the ASP.NET Core 8 MVC solution structure (Controllers, Models, ViewModels, Views)</li>
+          <li>Built ASP.NET Identity with Employee and Donor roles; seeded initial users via DbInitializer</li>
+          <li>Implemented Donation flow: once-off, recurring, anonymous, multi-currency (ZAR / USD / EUR)</li>
+          <li>Built ReferenceNumberService for donation reference and tax certificate number generation</li>
+          <li>Implemented TaxCertificate generation (one-per-donation idempotent logic in DonationsController)</li>
+          <li>Wired Employee Dashboard: project creation, project updates, donation and volunteer views</li>
+          <li>Deployed the ASP.NET Core app and Azure SQL Database to Azure App Service (Part 1 and Part 2)</li>
+          <li>Wrote all unit tests (DonationTests.cs — 17 tests covering validation, totals, and formatting)</li>
+          <li>Wrote all integration tests (DonationFlowIntegrationTests.cs — 5 tests with EF Core InMemory)</li>
+          <li>Wrote all Selenium UI tests (EmployeeLoginTests.cs + AnonymousDonationTests.cs — 7 tests)</li>
+          <li>Configured the Azure DevOps YAML pipeline (CI: build + tests; CD: deploy to App Service + SQL migrations)</li>
+          <li>Authored the k6 load test script (5 VUs, 30 s, donation POST flow)</li>
+          <li>Wrote the user manual and this team contribution report</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Member 2: database specialist -->
+    <div class="member-card">
+      <div class="member-card-header">
+        <span class="name">Member 2 — [Teammate Full Name]</span>
+        <span class="role">Database Specialist</span>
+      </div>
+      <div class="member-card-body">
+        <ul class="contrib-list">
+          <li>Designed the normalised relational schema (Users, Donors, Employees, Donations, DonationSchedules, TaxCertificates, AuditLog, ReliefProjects, ProjectUpdates, Volunteers)</li>
+          <li>Created and maintained the Azure SQL Database instance and connection strings</li>
+          <li>Wrote the EF Core entity configurations and migration scripts to match the schema</li>
+          <li>Implemented DonationSchedule model and seeded reference data for relief projects</li>
+          <li>Verified foreign-key constraints and cascade/restrict delete behaviours in ApplicationDbContext</li>
+          <li>Assisted with Azure SQL firewall rules and deployment settings for the pipeline</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Git evidence table ------------------------------------------------- -->
+    <h2>Git Commit Evidence</h2>
+
+    <div class="note">
+      Replace the placeholder commit hashes and messages below with actual entries
+      from your Git log. Run <code>git log --oneline --all</code> in your repository
+      to copy them.
+    </div>
+
+    <table>
+      <tr>
+        <th>Commit Hash</th>
+        <th>Author</th>
+        <th>Date</th>
+        <th>Message</th>
+      </tr>
+      <tr>
+        <td><code>a1b2c3d</code></td>
+        <td>Member 1</td>
+        <td>2026-09-22</td>
+        <td>Initial solution scaffold — ASP.NET Core 8 MVC, Identity, EF Core SQLite</td>
+      </tr>
+      <tr>
+        <td><code>e4f5a6b</code></td>
+        <td>Member 2</td>
+        <td>2026-09-22</td>
+        <td>Add normalised schema: Donor, Employee, Donation, TaxCertificate entities</td>
+      </tr>
+      <tr>
+        <td><code>7c8d9e0</code></td>
+        <td>Member 1</td>
+        <td>2026-09-23</td>
+        <td>Implement DonationsController with multi-currency and anonymous flow</td>
+      </tr>
+      <tr>
+        <td><code>1f2a3b4</code></td>
+        <td>Member 1</td>
+        <td>2026-09-23</td>
+        <td>Add ReferenceNumberService; implement TaxCertificate idempotent generation</td>
+      </tr>
+      <tr>
+        <td><code>5c6d7e8</code></td>
+        <td>Member 2</td>
+        <td>2026-09-23</td>
+        <td>EF Core OnModelCreating: FK constraints, unique indexes, cascade deletes</td>
+      </tr>
+      <tr>
+        <td><code>9f0a1b2</code></td>
+        <td>Member 1</td>
+        <td>2026-09-24</td>
+        <td>Deploy to Azure App Service; configure Azure SQL connection string</td>
+      </tr>
+      <tr>
+        <td><code>3c4d5e6</code></td>
+        <td>Member 1</td>
+        <td>2026-10-26</td>
+        <td>Add GiftOfTheGivers.Tests: 17 unit tests, 5 integration tests, 7 Selenium tests</td>
+      </tr>
+      <tr>
+        <td><code>7f8a9b0</code></td>
+        <td>Member 1</td>
+        <td>2026-10-26</td>
+        <td>Add Azure DevOps pipeline YAML; add k6 load test script</td>
+      </tr>
+      <tr>
+        <td><code>1c2d3e4</code></td>
+        <td>Member 1</td>
+        <td>2026-10-26</td>
+        <td>Add user manual (UserManual.html) and team contribution report</td>
+      </tr>
+    </table>
+
+    <div class="note">
+      If your repository is hosted on Azure DevOps Repos, export the commit
+      history from <em>Repos → Commits</em> and attach a screenshot to this
+      report as supporting evidence.
+    </div>
+
+  </div>
+
+  <div class="footer">
+    Gift of the Givers — Team Contribution Report &nbsp;|&nbsp;
+    Applied Programming Module &nbsp;|&nbsp; Rosebank College (IIE) &nbsp;|&nbsp; 2026
+  </div>
+
+</div>
+</body>
+</html>

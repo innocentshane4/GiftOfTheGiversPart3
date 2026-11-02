@@ -1,0 +1,241 @@
+@model DonateViewModel
+
+@{
+    ViewData["Title"] = "Donate";
+}
+
+<section class="container section-py">
+    <div class="text-center mb-4">
+        <h1>Make a Donation</h1>
+        <p class="text-muted-custom">Every contribution helps us respond faster and reach more communities.</p>
+    </div>
+
+    <div asp-validation-summary="ModelOnly"
+         class="alert alert-danger mx-auto"
+         style="max-width:900px; display:@(ViewData.ModelState.IsValid ? "none" : "block")">
+    </div>
+
+    <form asp-controller="Donations" asp-action="Donate" method="post" id="donationForm">
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-7">
+                <div class="card-brand p-4">
+                    <h5 class="mb-3">Donation Amount</h5>
+
+                    <div class="row g-2 mb-3">
+                        @{
+                            var presets = new[] { 250m, 500m, 1000m, 2500m };
+                        }
+
+                        @foreach (var preset in presets)
+                        {
+                            <div class="col-6 col-md-3">
+                                <input type="radio"
+                                       class="btn-check preset-radio"
+                                       name="PresetAmount"
+                                       id="preset-@preset"
+                                       value="@preset"
+                                       autocomplete="off"
+                                       checked="@(Model.PresetAmount == preset)" />
+
+                                <label class="btn btn-outline-secondary w-100" for="preset-@preset">
+                                    R@(preset.ToString("N0"))
+                                </label>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="CustomAmount" class="form-label">Or enter a custom amount</label>
+                        <input asp-for="CustomAmount"
+                               id="customAmount"
+                               class="form-control"
+                               placeholder="e.g. 750" />
+                        <span asp-validation-for="CustomAmount" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="Currency" class="form-label"></label>
+                            <select asp-for="Currency"
+                                    asp-items="Html.GetEnumSelectList<CurrencyCode>()"
+                                    class="form-select"
+                                    id="currencySelect">
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="ReliefProjectId" class="form-label"></label>
+                            <select asp-for="ReliefProjectId" class="form-select" id="projectSelect">
+                                <option value="">General Fund (no specific project)</option>
+                                @foreach (var p in Model.AvailableProjects)
+                                {
+                                    <option value="@p.Id" selected="@(Model.ReliefProjectId == p.Id)">
+                                        @p.Name
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label d-block">Donation Type</label>
+                        <div class="btn-group w-100" role="group">
+                            <input type="radio"
+                                   class="btn-check"
+                                   name="DonationType"
+                                   id="typeOneTime"
+                                   value="OneTime"
+                                   autocomplete="off"
+                                   checked="@(Model.DonationType == DonationType.OneTime)" />
+                            <label class="btn btn-outline-secondary" for="typeOneTime">One-time</label>
+
+                            <input type="radio"
+                                   class="btn-check"
+                                   name="DonationType"
+                                   id="typeRecurring"
+                                   value="Recurring"
+                                   autocomplete="off"
+                                   checked="@(Model.DonationType == DonationType.Recurring)" />
+                            <label class="btn btn-outline-secondary" for="typeRecurring">Recurring</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="FullName" class="form-label"></label>
+                        <input asp-for="FullName" class="form-control" id="fullNameInput" />
+                        <span asp-validation-for="FullName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-check mb-2">
+                        <input asp-for="IsAnonymous" class="form-check-input" id="anonymousCheck" />
+                        <label asp-for="IsAnonymous" class="form-check-label"></label>
+                    </div>
+
+                    <div class="alert alert-warning small d-none" id="recurringAnonymousWarning">
+                        A recurring donation cannot be anonymous because a recurring donation requires an identified donor.
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card-brand p-4" style="position:sticky; top:100px;">
+                    <h5 class="mb-3">Donation Summary</h5>
+
+                    <dl class="row small mb-3">
+                        <dt class="col-6">Amount</dt>
+                        <dd class="col-6" id="summaryAmount">—</dd>
+
+                        <dt class="col-6">Currency</dt>
+                        <dd class="col-6" id="summaryCurrency">ZAR</dd>
+
+                        <dt class="col-6">Type</dt>
+                        <dd class="col-6" id="summaryType">One-time</dd>
+
+                        <dt class="col-6">Project</dt>
+                        <dd class="col-6" id="summaryProject">General Fund</dd>
+
+                        <dt class="col-6">Date</dt>
+                        <dd class="col-6">@DateTime.Now.ToString("dd MMM yyyy")</dd>
+
+                        <dt class="col-6">Anonymous</dt>
+                        <dd class="col-6" id="summaryAnonymous">No</dd>
+                    </dl>
+
+                    <div class="alert alert-light small" style="background-color:var(--color-light-blue); border:none;">
+                        This is a demonstration transaction. No real payment will be processed.
+                    </div>
+
+                    <button type="submit" class="btn btn-brand-primary w-100">
+                        Continue to Payment — Prototype Demo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const presetRadios = document.querySelectorAll('.preset-radio');
+        const customAmount = document.getElementById('customAmount');
+        const currencySelect = document.getElementById('currencySelect');
+        const projectSelect = document.getElementById('projectSelect');
+        const anonymousCheck = document.getElementById('anonymousCheck');
+        const donationTypeRadios = document.querySelectorAll('input[name="DonationType"]');
+        const warning = document.getElementById('recurringAnonymousWarning');
+
+        function currentAmount() {
+            if (customAmount.value && parseFloat(customAmount.value) > 0) {
+                return parseFloat(customAmount.value);
+            }
+
+            const checked = document.querySelector('.preset-radio:checked');
+            return checked ? parseFloat(checked.value) : 0;
+        }
+
+        function currentDonationType() {
+            const checked = document.querySelector('input[name="DonationType"]:checked');
+            return checked ? checked.value : 'OneTime';
+        }
+
+        function updateSummary() {
+            const amount = currentAmount();
+
+            document.getElementById('summaryAmount').textContent =
+                amount > 0
+                    ? amount.toLocaleString(undefined, { minimumFractionDigits: 2 })
+                    : '—';
+
+            document.getElementById('summaryCurrency').textContent = currencySelect.value;
+            document.getElementById('summaryType').textContent =
+                currentDonationType() === 'Recurring' ? 'Recurring' : 'One-time';
+
+            const projectText =
+                projectSelect.options[projectSelect.selectedIndex]?.text || 'General Fund';
+
+            document.getElementById('summaryProject').textContent = projectText;
+            document.getElementById('summaryAnonymous').textContent =
+                anonymousCheck.checked ? 'Yes' : 'No';
+
+            const recurringAndAnonymous =
+                currentDonationType() === 'Recurring' && anonymousCheck.checked;
+
+            warning.classList.toggle('d-none', !recurringAndAnonymous);
+        }
+
+        presetRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                customAmount.value = '';
+                updateSummary();
+            });
+        });
+
+        customAmount.addEventListener('input', updateSummary);
+        currencySelect.addEventListener('change', updateSummary);
+        projectSelect.addEventListener('change', updateSummary);
+        anonymousCheck.addEventListener('change', updateSummary);
+        donationTypeRadios.forEach(radio => radio.addEventListener('change', updateSummary));
+
+        document.getElementById('donationForm').addEventListener('submit', function (event) {
+            if (currentDonationType() === 'Recurring' && anonymousCheck.checked) {
+                event.preventDefault();
+                warning.classList.remove('d-none');
+
+                window.scrollTo({
+                    top: warning.getBoundingClientRect().top + window.scrollY - 120,
+                    behavior: 'smooth'
+                });
+            }
+        });
+
+        updateSummary();
+    </script>
+}

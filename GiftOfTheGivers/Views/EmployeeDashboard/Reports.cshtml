@@ -1,0 +1,45 @@
+@{
+    Layout = "_DashboardLayout";
+    var byCategory = ViewData["ByCategory"] as Dictionary<string, (int Count, decimal Budget)>;
+    var totalDonations = (decimal)ViewData["TotalDonations"]!;
+    var totalVolunteers = (int)ViewData["TotalVolunteers"]!;
+}
+
+<p class="text-muted-custom mb-4">A high-level summary of relief activity across the organisation.</p>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="card-brand p-4 stat-tile">
+            <div class="stat-tile-label">Total Donations Received</div>
+            <div class="stat-tile-value">R@totalDonations.ToString("N0")</div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card-brand p-4 stat-tile">
+            <div class="stat-tile-label">Registered Volunteers</div>
+            <div class="stat-tile-value">@totalVolunteers</div>
+        </div>
+    </div>
+</div>
+
+<div class="card-brand p-4">
+    <h5 class="mb-3">Projects by Category</h5>
+    <div class="table-responsive-cards">
+        <table class="table table-brand mb-0">
+            <thead><tr><th>Category</th><th>Project Count</th><th>Total Budget</th></tr></thead>
+            <tbody>
+                @if (byCategory != null)
+                {
+                    @foreach (var kv in byCategory)
+                    {
+                        <tr>
+                            <td>@kv.Key</td>
+                            <td>@kv.Value.Count</td>
+                            <td>R@kv.Value.Budget.ToString("N0")</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

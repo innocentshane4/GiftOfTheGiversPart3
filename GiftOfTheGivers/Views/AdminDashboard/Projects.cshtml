@@ -1,0 +1,27 @@
+@model List<ReliefProject>
+@{
+    Layout = "_DashboardLayout";
+}
+
+<p class="text-muted-custom mb-3">All relief projects across the organisation.</p>
+
+<div class="card-brand p-0">
+    <div class="table-responsive-cards">
+        <table class="table table-brand mb-0">
+            <thead><tr><th>Name</th><th>Location</th><th>Status</th><th>Budget</th><th>Created By</th><th></th></tr></thead>
+            <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        <td>@p.Name</td>
+                        <td>@p.Location</td>
+                        <td><span class="badge-status badge-status-@p.Status.ToString().ToLower()">@p.StatusLabel</span></td>
+                        <td>@($"R{p.Budget:N0}")</td>
+                        <td>@(p.CreatedByEmployee?.User?.FullName ?? "—")</td>
+                        <td><a asp-controller="Projects" asp-action="Details" asp-route-id="@p.Id" class="small btn-link-underline" target="_blank">View</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+@model ProvisionStaffUserViewModel
+@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="card-brand p-4" style="max-width:560px;">
+    <div class="alert alert-light small" style="background-color:var(--color-light-blue); border:none;">
+        Employee and Admin accounts are internally provisioned and cannot be created through public registration.
+    </div>
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert" style="display:@(ViewData.ModelState.IsValid ? "none" : "block")"></div>
+
+    <form asp-controller="AdminDashboard" asp-action="ProvisionStaffUser" method="post">
+        <div class="mb-3">
+            <label asp-for="FullName" class="form-label"></label>
+            <input asp-for="FullName" class="form-control" />
+            <span asp-validation-for="FullName" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Password" class="form-label"></label>
+            <input asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Role" class="form-label"></label>
+            <select asp-for="Role" class="form-select">
+                <option value="Employee">Employee</option>
+                <option value="Admin">Admin</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-brand-primary">Provision Account</button>
+        <a asp-controller="AdminDashboard" asp-action="UserManagement" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+</div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

@@ -1,0 +1,35 @@
+@model ProjectUpdateFormViewModel
+@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="card-brand p-4" style="max-width:640px;">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert" style="display:@(ViewData.ModelState.IsValid ? "none" : "block")"></div>
+    <form asp-controller="EmployeeDashboard" asp-action="CreateProjectUpdate" method="post">
+        <div class="mb-3">
+            <label asp-for="ReliefProjectId" class="form-label">Project</label>
+            <select asp-for="ReliefProjectId" class="form-select">
+                <option value="">Select a project</option>
+                @foreach (var p in Model.AvailableProjects)
+                {
+                    <option value="@p.Id">@p.Name</option>
+                }
+            </select>
+            <span asp-validation-for="ReliefProjectId" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label"></label>
+            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Description" class="text-danger small"></span>
+        </div>
+        <button type="submit" class="btn btn-brand-primary">Post Update</button>
+        <a asp-controller="EmployeeDashboard" asp-action="ProjectUpdates" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+</div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

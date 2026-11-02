@@ -1,0 +1,37 @@
+@model Donation
+@{
+    ViewData["Title"] = "Thank You";
+}
+
+<section class="container section-py text-center">
+    <div style="max-width:560px; margin:0 auto;">
+        <div class="success-check"><i class="bi bi-check-lg"></i></div>
+        <h1>Thank You for Your Generosity!</h1>
+        <p class="text-muted-custom">Your donation has been recorded. A confirmation has been logged to your account.</p>
+        <span class="badge-demo d-inline-block mb-3">Demo Transaction — Prototype Data</span>
+
+        <div class="card-brand p-4 text-start mt-3">
+            <dl class="row small mb-0">
+                <dt class="col-6">Reference Number</dt><dd class="col-6">@Model.ReferenceNumber</dd>
+                <dt class="col-6">Amount</dt><dd class="col-6">@Model.Amount.ToString("N2")</dd>
+                <dt class="col-6">Currency</dt><dd class="col-6">@Model.Currency</dd>
+                <dt class="col-6">Donation Type</dt><dd class="col-6">@(Model.DonationType == DonationType.Recurring ? "Recurring" : "One-time")</dd>
+                <dt class="col-6">Date</dt><dd class="col-6">@Model.DonationDate.ToString("dd MMM yyyy")</dd>
+                <dt class="col-6">Project</dt><dd class="col-6">@(Model.ReliefProject?.Name ?? "General Fund")</dd>
+                <dt class="col-6">Status</dt><dd class="col-6"><span class="badge-status badge-status-completed">@Model.StatusLabel</span></dd>
+            </dl>
+        </div>
+
+        <div class="d-flex flex-column flex-sm-row gap-2 justify-content-center mt-4">
+            @if (!Model.IsAnonymous)
+            {
+                <a asp-controller="Donations" asp-action="TaxCertificate" asp-route-id="@Model.Id" class="btn btn-brand-blue">View Tax Certificate</a>
+            }
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Back to Home</a>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <a asp-controller="DonorDashboard" asp-action="MyDonations" class="btn btn-brand-primary">View My Donations</a>
+            }
+        </div>
+    </div>
+</section>

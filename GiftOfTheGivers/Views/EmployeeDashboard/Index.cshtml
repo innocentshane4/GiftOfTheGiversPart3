@@ -1,0 +1,59 @@
+@model EmployeeDashboardViewModel
+@{
+    Layout = "_DashboardLayout";
+}
+
+<p class="text-muted-custom mb-4">Welcome back, @Model.EmployeeName! Here's what's happening across our relief projects.</p>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card-brand p-4 stat-tile">
+            <div class="stat-tile-label">Active Projects</div>
+            <div class="stat-tile-value">@Model.ActiveProjectsCount</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card-brand p-4 stat-tile">
+            <div class="stat-tile-label">Registered Volunteers</div>
+            <div class="stat-tile-value">@Model.RegisteredVolunteersCount</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card-brand p-4 stat-tile">
+            <div class="stat-tile-label">Total Donation Value</div>
+            <div class="stat-tile-value">
+                @($"R{Model.TotalDonationValue:N0}")
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card-brand p-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0">Recent Project Updates</h5>
+        <a asp-controller="EmployeeDashboard" asp-action="ProjectUpdates" class="small btn-link-underline">View All</a>
+    </div>
+    @if (!Model.RecentUpdates.Any())
+    {
+        <p class="text-muted-custom small mb-0">No project updates have been posted yet.</p>
+    }
+    else
+    {
+        <div class="table-responsive-cards">
+            <table class="table table-brand">
+                <thead><tr><th>Project</th><th>Update</th><th>Date</th><th>Employee</th></tr></thead>
+                <tbody>
+                    @foreach (var u in Model.RecentUpdates)
+                    {
+                        <tr>
+                            <td>@u.ReliefProject?.Name</td>
+                            <td>@u.Title</td>
+                            <td>@u.PostedDate.ToString("dd MMM yyyy")</td>
+                            <td>@(u.Employee?.User?.FullName ?? "—")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

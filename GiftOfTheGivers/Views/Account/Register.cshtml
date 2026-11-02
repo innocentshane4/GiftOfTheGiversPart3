@@ -1,0 +1,54 @@
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Create an Account";
+}
+<div class="container">
+    <div class="auth-card" style="max-width:520px;">
+        <div class="text-center mb-4">
+            <i class="bi bi-person-plus" style="color:var(--color-primary-orange); font-size:2rem;"></i>
+            <h3 class="mt-2 mb-0">Create a Donor Account</h3>
+            <p class="text-muted-custom small">Track your donations and download tax certificates.</p>
+        </div>
+
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert" style="display:@(ViewData.ModelState.IsValid ? "none" : "block")"></div>
+
+        <form asp-controller="Account" asp-action="Register" method="post">
+            <div class="mb-3">
+                <label asp-for="FullName" class="form-label"></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" autocomplete="username" />
+                <span asp-validation-for="Email" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Phone" class="form-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" class="form-control" autocomplete="new-password" />
+                <span asp-validation-for="Password" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ConfirmPassword" class="form-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+            </div>
+            <button type="submit" class="btn btn-brand-primary w-100">Register</button>
+        </form>
+
+        <p class="text-center small text-muted-custom mt-3 mb-0">
+            Only donor accounts can be created here. Employee and Admin accounts are provisioned internally.
+        </p>
+        <hr class="my-3" />
+        <p class="text-center small mb-0">Already have an account? <a asp-controller="Account" asp-action="Login">Login</a></p>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,25 @@
+@model List<TaxCertificate>
+@{
+    Layout = "_DashboardLayout";
+}
+
+<p class="text-muted-custom mb-3">Issued tax certificates across all donors.</p>
+
+<div class="card-brand p-0">
+    <div class="table-responsive-cards">
+        <table class="table table-brand mb-0">
+            <thead><tr><th>Certificate No.</th><th>Donor</th><th>Amount</th><th>Issued</th></tr></thead>
+            <tbody>
+                @foreach (var t in Model)
+                {
+                    <tr>
+                        <td>@t.CertificateNumber</td>
+                        <td>@(t.Donation?.Donor?.User?.FullName ?? t.Donation?.DonorFullName ?? "—")</td>
+                        <td>@t.Currency @t.Amount.ToString("N2")</td>
+                        <td>@t.IssuedDate.ToString("dd MMM yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
