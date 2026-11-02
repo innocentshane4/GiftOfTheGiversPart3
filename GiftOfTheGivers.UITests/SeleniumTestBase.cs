@@ -14,7 +14,7 @@ namespace GiftOfTheGivers.UITests
         // For local development:  https://localhost:7001
         // For Azure:              https://giftofthegivers.azurewebsites.net
         // ---------------------------------------------------------------
-        protected const string BaseUrl = "https://localhost:7001";
+        protected const string BaseUrl = "https://localhost:7099/";
 
         protected IWebDriver Driver { get; }
 
