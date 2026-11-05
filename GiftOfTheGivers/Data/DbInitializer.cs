@@ -12,8 +12,8 @@ namespace GiftOfTheGivers.Data
             var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-            // SQLite: EnsureCreatedAsync creates the .db file and all tables
-            // from the model classes. No migrations needed.
+            // Create the SQL Server schema when it does not exist yet.
+            // This project currently has no EF Core migrations.
             await context.Database.EnsureCreatedAsync();
 
             // 1. Roles

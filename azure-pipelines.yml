@@ -1,227 +1,37 @@
-# =============================================================================
-# Gift of the Givers — Azure DevOps Pipeline
-# Part 3: CI/CD  (build → unit tests → integration tests → deploy)
-# =============================================================================
-#
-# SETUP INSTRUCTIONS (do this once in Azure DevOps before the first run):
-#
-#   1. Create an Azure Resource Manager service connection named
-#      "AzureServiceConnection" in Project Settings → Service connections.
-#
-#   2. Create a Variable Group named "GiftOfTheGivers-Prod" with:
-#        AZURE_WEBAPP_NAME       e.g.  giftofthegivers
-#        AZURE_FUNCTIONAPP_NAME  e.g.  gotg-functions
-#        AZURE_SQL_SERVER        e.g.  gotg-server.database.windows.net
-#        AZURE_SQL_DB            e.g.  GiftOfTheGiversDB
-#        AZURE_SQL_USER          (secret)
-#        AZURE_SQL_PASSWORD      (secret)
-#        ConnectionStrings__DefaultConnection   (secret — full ADO.NET string)
-#
-#   3. Link the variable group to this pipeline under
-#      Pipeline → Edit → Variables → Variable groups.
-#
-# =============================================================================
 
 trigger:
-  branches:
-    include:
-      - main
-      - develop
+  - main
 
-pr:
-  branches:
-    include:
-      - main
+pool:
+  vmImage: 'windows-latest'
 
 variables:
-  - group: GiftOfTheGivers-Prod
-  - name:  buildConfiguration
-    value: Release
-  - name:  dotnetVersion
-    value: '8.x'
-  - name:  webAppProject
-    value: 'GiftOfTheGivers/GiftOfTheGivers.csproj'
-  - name:  unitTestProject
-    value: 'GiftOfTheGivers.Tests/GiftOfTheGivers.Tests.csproj'
-  - name:  integrationTestProject
-    value: 'GiftOfTheGivers.Tests/GiftOfTheGivers.Tests.csproj'
-  - name:  vmImage
-    value: 'ubuntu-latest'
+  buildConfiguration: 'Release'
 
-# ---------------------------------------------------------------------------
-# Stage 1 — Build & Unit Tests
-# ---------------------------------------------------------------------------
-stages:
+steps:
+  - task: UseDotNet@2
+    displayName: 'Install .NET SDK'
+    inputs:
+      packageType: 'sdk'
+      version: '8.x'
 
-- stage: Build
-  displayName: 'Build and Test'
-  jobs:
+  - script: dotnet restore
+    displayName: 'Restore NuGet Packages'
 
-  - job: BuildAndUnitTest
-    displayName: 'Build solution and run unit + integration tests'
-    pool:
-      vmImage: $(vmImage)
+  - script: dotnet build --configuration $(buildConfiguration) --no-restore
+    displayName: 'Build Solution'
 
-    steps:
+  - script: dotnet test --configuration $(buildConfiguration) --no-build --logger "trx;LogFileName=TestResults.trx" --results-directory "$(Agent.TempDirectory)/TestResults"
+    displayName: 'Run Automated Tests'
+    continueOnError: false
 
-    # 1. Use the specified .NET SDK
-    - task: UseDotNet@2
-      displayName: 'Use .NET $(dotnetVersion)'
-      inputs:
-        packageType: sdk
-        version:     $(dotnetVersion)
-
-    # 2. Restore NuGet packages
-    - task: DotNetCoreCLI@2
-      displayName: 'dotnet restore'
-      inputs:
-        command:   restore
-        projects:  '**/*.csproj'
-
-    # 3. Build the solution in Release configuration
-    - task: DotNetCoreCLI@2
-      displayName: 'dotnet build'
-      inputs:
-        command:   build
-        projects:  '**/*.csproj'
-        arguments: '--configuration $(buildConfiguration) --no-restore'
-
-    # 4. Run unit tests and collect code coverage
-    - task: DotNetCoreCLI@2
-      displayName: 'Run unit tests'
-      inputs:
-        command:   test
-        projects:  $(unitTestProject)
-        arguments: >
-          --configuration $(buildConfiguration)
-          --no-build
-          --filter "FullyQualifiedName!~Integration"
-          --collect:"XPlat Code Coverage"
-          --results-directory $(Agent.TempDirectory)/TestResults
-          --logger trx
-      env:
-        # Provide a dummy connection string so EF Core InMemory tests work
-        ConnectionStrings__DefaultConnection: 'Data Source=:memory:'
-
-    # 5. Run integration tests (also in the test project, different filter)
-    - task: DotNetCoreCLI@2
-      displayName: 'Run integration tests'
-      inputs:
-        command:   test
-        projects:  $(integrationTestProject)
-        arguments: >
-          --configuration $(buildConfiguration)
-          --no-build
-          --filter "FullyQualifiedName~Integration"
-          --collect:"XPlat Code Coverage"
-          --results-directory $(Agent.TempDirectory)/TestResults
-          --logger trx
-      env:
-        ConnectionStrings__DefaultConnection: 'Data Source=:memory:'
-
-    # 6. Publish test results to the pipeline run
-    - task: PublishTestResults@2
-      displayName: 'Publish test results'
-      inputs:
-        testResultsFormat:     VSTest
-        testResultsFiles:      '$(Agent.TempDirectory)/TestResults/**/*.trx'
-        mergeTestResults:      true
-        testRunTitle:          'GiftOfTheGivers Unit + Integration Tests'
-      condition: always()
-
-    # 7. Publish code-coverage results
-    - task: PublishCodeCoverageResults@1
-      displayName: 'Publish code coverage'
-      inputs:
-        codeCoverageTool:    Cobertura
-        summaryFileLocation: '$(Agent.TempDirectory)/TestResults/**/coverage.cobertura.xml'
-      condition: always()
-
-    # 8. Publish the web-app artifact for the deploy stage
-    - task: DotNetCoreCLI@2
-      displayName: 'dotnet publish'
-      inputs:
-        command:   publish
-        projects:  $(webAppProject)
-        arguments: >
-          --configuration $(buildConfiguration)
-          --output $(Build.ArtifactStagingDirectory)/webapp
-        publishWebProjects: false
-        zipAfterPublish:    true
-
-    # 9. Upload the artifact
-    - task: PublishPipelineArtifact@1
-      displayName: 'Upload webapp artifact'
-      inputs:
-        targetPath:   $(Build.ArtifactStagingDirectory)/webapp
-        artifact:     WebApp
-        publishLocation: pipeline
-
-# ---------------------------------------------------------------------------
-# Stage 2 — Deploy to Azure App Service
-# ---------------------------------------------------------------------------
-- stage: Deploy
-  displayName: 'Deploy to Azure'
-  dependsOn: Build
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
-  jobs:
-
-  - deployment: DeployWebApp
-    displayName: 'Deploy ASP.NET Core app to Azure App Service'
-    pool:
-      vmImage: $(vmImage)
-    environment: 'Production'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-
-          # 1. Download the artifact produced in Stage 1
-          - task: DownloadPipelineArtifact@2
-            displayName: 'Download webapp artifact'
-            inputs:
-              artifact:       WebApp
-              targetPath:     $(Pipeline.Workspace)/WebApp
-
-          # 2. Apply any pending EF Core migrations to Azure SQL
-          #    (lightweight schema updates only — uses the published DLL)
-          - task: AzureCLI@2
-            displayName: 'Apply EF Core migrations to Azure SQL'
-            inputs:
-              azureSubscription: 'AzureServiceConnection'
-              scriptType:        bash
-              scriptLocation:    inlineScript
-              inlineScript: |
-                echo "Applying EF Core migrations..."
-                dotnet tool install --global dotnet-ef --version 8.* 2>/dev/null || true
-                dotnet ef database update \
-                  --project GiftOfTheGivers/GiftOfTheGivers.csproj \
-                  --connection "$(ConnectionStrings__DefaultConnection)"
-                echo "Migration complete."
-            env:
-              ConnectionStrings__DefaultConnection: $(ConnectionStrings__DefaultConnection)
-
-          # 3. Deploy to Azure App Service
-          - task: AzureWebApp@1
-            displayName: 'Deploy to Azure App Service'
-            inputs:
-              azureSubscription:  'AzureServiceConnection'
-              appType:            webApp
-              appName:            $(AZURE_WEBAPP_NAME)
-              package:            '$(Pipeline.Workspace)/WebApp/**/*.zip'
-              deploymentMethod:   auto
-              appSettings: >
-                -ConnectionStrings__DefaultConnection "$(ConnectionStrings__DefaultConnection)"
-
-          # 4. Smoke-test: verify the deployed site responds with HTTP 200
-          - bash: |
-              echo "Running smoke test against https://$(AZURE_WEBAPP_NAME).azurewebsites.net ..."
-              STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-                https://$(AZURE_WEBAPP_NAME).azurewebsites.net)
-              echo "HTTP status: $STATUS"
-              if [ "$STATUS" != "200" ]; then
-                echo "##vso[task.logissue type=error]Smoke test failed — HTTP $STATUS"
-                exit 1
-              fi
-              echo "Smoke test passed."
-            displayName: 'Smoke test — check live site responds'
+  - task: PublishTestResults@2
+    displayName: 'Publish Test Results'
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFormat: 'VSTest'
+      testResultsFiles: '**/*.trx'
+      searchFolder: '$(Agent.TempDirectory)/TestResults'
+      mergeTestResults: true
+      failTaskOnFailedTests: true
+      testRunTitle: 'Gift of the Givers Protect - Automated Tests'
